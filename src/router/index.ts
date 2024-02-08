@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import LoginViewVue from '@/views/LoginView.vue';
+import TaskmanagerViewVue from '@/views/TaskmanagerView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      component: TaskmangerView,
+      component: TaskmanagerViewVue,
       meta: {
         authReq: true
       }

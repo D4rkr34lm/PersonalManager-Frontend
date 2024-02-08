@@ -7,8 +7,10 @@
 </template>
 
 <script lang="ts">
-    export default{
+    import LoginForm from '@/components/login/LoginForm.vue';
 
+    export default{
+        components:{LoginForm}
     }
 </script>
 
