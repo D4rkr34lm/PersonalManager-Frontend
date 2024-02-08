@@ -6,12 +6,14 @@
 <script lang="ts">
     import { mapState } from 'pinia';
 
+    import TaskContainer from '@/components/taskmanager/TaskContainer.vue'
     import useContainersStore from '@/stores/containers'
 
     export default{
         computed:{
             ...mapState(useContainersStore, ['containers'])
         },
+        components: {TaskContainer},
         created() {
             useContainersStore().loadContainers()
         }
