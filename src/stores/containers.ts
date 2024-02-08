@@ -15,7 +15,7 @@ interface Task{
 }
 
 const useContainersStore = defineStore('counters',{
-    state: () =>{
+    state(){
         return {
             containers: [] as TaskContainer[]
         }
