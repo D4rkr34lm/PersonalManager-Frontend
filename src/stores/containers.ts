@@ -1,5 +1,6 @@
-import router from "@/router";
 import { defineStore } from "pinia";
+
+import router from "@/router";
 
 interface TaskContainer{
     uuid: string
