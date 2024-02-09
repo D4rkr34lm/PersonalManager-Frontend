@@ -1,83 +1,90 @@
 <template>
-    <div class="task-container">
-        <div class="inner-task-container">
-            <task-block v-for="task in tasks" :key="task.uuid" :uuid="task.uuid" :title="task.title" :type="task.type" :body="task.body"/>
-        </div>
-        <div class="create-new-button-container">
-            <button class="create-new-button">+</button>
-        </div>
+  <div class="task-container">
+    <div class="inner-task-container">
+      <task-block
+        v-for="task in tasks"
+        :key="task.uuid"
+        :uuid="task.uuid"
+        :title="task.title"
+        :type="task.type"
+        :body="task.body"
+      />
     </div>
+    <div class="create-new-button-container">
+      <button class="create-new-button">+</button>
+    </div>
+  </div>
 </template>
 <script lang="ts">
-    class Task{
-        uuid : string = ""
-        title: string = ""
-        type: string = ""
-        body: any
-    }
+class Task {
+  uuid: string = ''
+  title: string = ''
+  type: string = ''
+  body: any
+}
 
-    import TaskBlock from '@/components/taskmanager/TaskBlock.vue'
+import TaskBlock from '@/components/taskmanager/TaskBlock.vue'
 
-    export default{
-        props: {
-            tasks: Array<Task>
-        },
-        components: {TaskBlock}
-    }
+export default {
+  props: {
+    tasks: Array<Task>
+  },
+  components: { TaskBlock }
+}
 </script>
 <style>
-    .task-container{
-        display: flex;
-        flex-direction: column;
+.task-container {
+  display: flex;
+  flex-direction: column;
 
-        width: 50%;
-        max-width: 250px;
-        
-        margin-left: 10px;
-        margin-right: 10px;
+  width: 50%;
+  max-width: 250px;
 
-        border: 1px #959595 solid;
-        border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 
-        background-color: white;
-    }
+  border: 1px #959595 solid;
+  border-radius: 10px;
 
-    .inner-task-container{
-        overflow-y: scroll;
-        flex-grow: 1;
+  background-color: white;
+}
 
-        padding: 5px;
-        padding-bottom: none;
+.inner-task-container {
+  overflow-y: scroll;
+  flex-grow: 1;
 
-        scrollbar-width: none;
-    }
+  padding: 5px;
+  padding-bottom: none;
 
-    .create-new-button{
-        border: none;
-        border-top: #959595 1px solid;
+  scrollbar-width: none;
+}
 
-        flex-grow: 1;
-        
-        background: none;
+.create-new-button {
+  border: none;
+  border-top: #959595 1px solid;
 
-        margin-left: 10px;
-        margin-right: 10px;
-        margin-bottom: none;
-        margin-top: none;
-        padding: 5px;
+  flex-grow: 1;
 
-        font-size: x-large;
-        color: #626262;
-    }
+  background: none;
 
-    .create-new-button-container{
-        display: flex;
-        flex-direction: row;
-        
-        border-radius: 0px 0px 10px 10px;
-    }
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: none;
+  margin-top: none;
+  padding: 5px;
 
-    .create-new-button-container:hover{
-        background-color: #cfcfcf;
-    }
+  font-size: x-large;
+  color: #626262;
+}
+
+.create-new-button-container {
+  display: flex;
+  flex-direction: row;
+
+  border-radius: 0px 0px 10px 10px;
+}
+
+.create-new-button-container:hover {
+  background-color: #cfcfcf;
+}
 </style>
