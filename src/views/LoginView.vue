@@ -1,6 +1,6 @@
 <template>
   <div id="view-root">
-    <h1><img src="/fh.png"/> Personal Task Manager</h1>
+    <h1><img src="/fh.png" /> Personal Task Manager</h1>
     <login-form />
   </div>
 </template>

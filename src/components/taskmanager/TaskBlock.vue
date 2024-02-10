@@ -1,33 +1,41 @@
 <template>
-  <div :class="moving ? 'shadow-task' : 'task'">
-    <div @mousedown="startMove" @mouseup="stopMove" @mouseleave="stopMove">
+  <div :class="movingTask.uuid == uuid ? 'shadow-task' : 'task'">
+    <div @mousedown="startMove">
       <h2>{{ title }}</h2>
       <basic-task-body v-if="type == 'basic'" :text="body?.text" />
     </div>
   </div>
 </template>
 <script lang="ts">
+
+
 import BasicTaskBody from '@/components/taskmanager/taskbodys/BasicTaskBody.vue'
+import useMovingTaskStore from '@/stores/movingTask'
+import { mapState } from 'pinia'
 
 export default {
   data() {
     return {
-      moving: false
     }
   },
   props: {
+    index: Number,
     uuid: String,
     title: String,
     type: String,
     body: Object
   },
+  computed: {
+    ...mapState(useMovingTaskStore, ['movingTask'])
+  },
   methods: {
     startMove() {
-      this.moving = true
+      useMovingTaskStore().$patch({
+        movingTask: {uuid: this.uuid, type: this.type, title: this.title, body: this.body},
+        index: this.index,
+        isMoving: true
+      })
     },
-    stopMove() {
-      this.moving = false
-    }
   },
   components: { BasicTaskBody }
 }

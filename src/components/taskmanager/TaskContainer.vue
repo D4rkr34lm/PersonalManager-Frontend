@@ -2,8 +2,9 @@
   <div class="task-container">
     <div class="inner-task-container">
       <task-block
-        v-for="task in tasks"
+        v-for="(task, index) in tasks"
         :key="task.uuid"
+        :index="index"
         :uuid="task.uuid"
         :title="task.title"
         :type="task.type"

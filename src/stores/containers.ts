@@ -2,12 +2,12 @@ import { defineStore } from 'pinia'
 
 import router from '@/router'
 
-interface TaskContainer {
+export interface TaskContainer {
   uuid: string
   tasks: Task[]
 }
 
-interface Task {
+export interface Task {
   uuid: string
   type: string
   title: string
