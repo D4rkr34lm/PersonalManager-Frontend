@@ -1,6 +1,6 @@
 <template>
   <div :class="movingTask.uuid == uuid ? 'shadow-task' : 'task'">
-    <div @mousedown="startMove">
+    <div @mousedown="startMove" @mouseup="stopMove">
       <h2>{{ title }}</h2>
       <basic-task-body v-if="type == 'basic'" :text="body?.text" />
     </div>
@@ -26,16 +26,28 @@ export default {
     body: Object
   },
   computed: {
-    ...mapState(useMovingTaskStore, ['movingTask'])
+    ...mapState(useMovingTaskStore, ['movingTask', 'isMoving'])
   },
   methods: {
     startMove() {
-      useMovingTaskStore().$patch({
-        movingTask: {uuid: this.uuid, type: this.type, title: this.title, body: this.body},
-        index: this.index,
-        isMoving: true
-      })
+      if(!this.isMoving){
+        useMovingTaskStore().$patch({
+          movingTask: { uuid: this.uuid, type: this.type, title: this.title, body: this.body },
+          index: this.index,
+          isMoving: true
+        })
+      }
     },
+    stopMove() {
+      if(this.isMoving && this.uuid == "0"){
+        useMovingTaskStore().$patch({
+          movingTask: {uuid: "", type:"", title:"", body:{}},
+          index: -1,
+          isMoving: false
+        })
+
+      }
+    }
   },
   components: { BasicTaskBody }
 }
@@ -46,6 +58,7 @@ export default {
   border-radius: 5px;
 
   margin-bottom: 5px;
+  background-color: white;
 }
 
 .shadow-task {
