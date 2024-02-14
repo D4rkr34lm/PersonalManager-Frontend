@@ -7,10 +7,10 @@ export interface TaskContainer {
   tasks: Task[]
 }
 
-export interface Task {
-  uuid: string
-  type: string
-  title: string
+export class Task {
+  uuid: string = '0-0-0-0-0'
+  title: string = ''
+  type: string = ''
   body: any
 }
 
@@ -22,7 +22,7 @@ const useContainersStore = defineStore('counters', {
   },
   getters: {},
   actions: {
-    async loadContainers() {
+    async load() {
       const res = await fetch('http://home.local:9001/data', {
         method: 'GET',
         headers: {
@@ -40,7 +40,25 @@ const useContainersStore = defineStore('counters', {
         localStorage.removeItem('username')
         router.push('/login')
       }
-    }
+    },
+    moveTask(index: number, containerID: string, newIndex: number, newContainerID: string) {
+      if (this.containers.length === 0) return
+
+      const oldContainer = this.containers.find((container) => {
+        return container.uuid == containerID
+      })
+      const task = oldContainer!.tasks[index]
+
+      oldContainer!.tasks.splice(index, 1)
+
+      if (containerID == newContainerID && index === newIndex - 1) {
+        newIndex++
+      }
+
+      const newContainer = this.containers.find((container) => container.uuid == newContainerID)
+      newContainer!.tasks.splice(newIndex, 0, task)
+    },
+    async updateUpstream(task: Task) {}
   }
 })
 

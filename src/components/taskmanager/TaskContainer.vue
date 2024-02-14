@@ -1,15 +1,21 @@
 <template>
   <div class="task-container">
     <div class="inner-task-container">
-      <task-block
+      <div
+        class="task-colision-box"
         v-for="(task, index) in tasks"
-        :key="task.uuid"
-        :index="index"
-        :uuid="task.uuid"
-        :title="task.title"
-        :type="task.type"
-        :body="task.body"
-      />
+        :key="index"
+        @mouseenter="taskMoveOverHandler(index, uuid!)"
+      >
+        <task-block
+          :index="index"
+          :uuid="task.uuid"
+          :containerID="uuid"
+          :title="task.title"
+          :type="task.type"
+          :body="task.body"
+        />
+      </div>
     </div>
     <div class="create-new-button-container">
       <button class="create-new-button">+</button>
@@ -17,18 +23,21 @@
   </div>
 </template>
 <script lang="ts">
-class Task {
-  uuid: string = ''
-  title: string = ''
-  type: string = ''
-  body: any
-}
+import { Task } from '@/stores/containers'
+import useMovingTaskStore from '@/stores/movingTask'
 
 import TaskBlock from '@/components/taskmanager/TaskBlock.vue'
 
 export default {
   props: {
+    uuid: String,
     tasks: Array<Task>
+  },
+  methods: {
+    taskMoveOverHandler(index: number, containerID: string) {
+      if (!useMovingTaskStore().isMoving) return
+      useMovingTaskStore().moveTask(index, containerID)
+    }
   },
   components: { TaskBlock }
 }
@@ -58,6 +67,10 @@ export default {
   padding-bottom: none;
 
   scrollbar-width: none;
+}
+
+.task-colision-box {
+  padding-bottom: 5px;
 }
 
 .create-new-button {

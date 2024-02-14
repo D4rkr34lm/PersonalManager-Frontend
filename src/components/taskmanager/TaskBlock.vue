@@ -1,26 +1,28 @@
 <template>
-  <div :class="movingTask.uuid == uuid ? 'shadow-task' : 'task'">
-    <div @mousedown="startMove" @mouseup="stopMove">
-      <h2>{{ title }}</h2>
-      <basic-task-body v-if="type == 'basic'" :text="body?.text" />
-    </div>
+  <div
+    ref="wrapper"
+    :class="movingTask.uuid == uuid ? 'shadow-task' : 'task'"
+    @mousedown="startMove"
+  >
+    <h2>{{ title }}</h2>
+    <basic-task-body v-if="type == 'basic'" :text="body?.text" />
   </div>
 </template>
 <script lang="ts">
-
+import { mapState } from 'pinia'
 
 import BasicTaskBody from '@/components/taskmanager/taskbodys/BasicTaskBody.vue'
+
 import useMovingTaskStore from '@/stores/movingTask'
-import { mapState } from 'pinia'
 
 export default {
   data() {
-    return {
-    }
+    return {}
   },
   props: {
     index: Number,
     uuid: String,
+    containerID: String,
     title: String,
     type: String,
     body: Object
@@ -29,23 +31,19 @@ export default {
     ...mapState(useMovingTaskStore, ['movingTask', 'isMoving'])
   },
   methods: {
-    startMove() {
-      if(!this.isMoving){
+    startMove(event: MouseEvent) {
+      if (!this.isMoving) {
+        const box = (this.$refs['wrapper'] as HTMLElement).getBoundingClientRect()
+
+        const clickPosition = { x: event.clientX - box.left, y: event.clientY - box.top }
+
         useMovingTaskStore().$patch({
           movingTask: { uuid: this.uuid, type: this.type, title: this.title, body: this.body },
           index: this.index,
-          isMoving: true
+          containerID: this.containerID,
+          isMoving: true,
+          clickPosition: clickPosition
         })
-      }
-    },
-    stopMove() {
-      if(this.isMoving && this.uuid == "0"){
-        useMovingTaskStore().$patch({
-          movingTask: {uuid: "", type:"", title:"", body:{}},
-          index: -1,
-          isMoving: false
-        })
-
       }
     }
   },
@@ -57,15 +55,12 @@ export default {
   border: 1px #959595 solid;
   border-radius: 5px;
 
-  margin-bottom: 5px;
   background-color: white;
 }
 
 .shadow-task {
   border: 1px #e5e5e5 solid;
   border-radius: 5px;
-
-  margin-bottom: 5px;
 
   color: #e5e5e5;
   background-color: #e5e5e5;
