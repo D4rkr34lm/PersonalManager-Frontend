@@ -44,21 +44,43 @@ const useContainersStore = defineStore('counters', {
     moveTask(index: number, containerID: string, newIndex: number, newContainerID: string) {
       if (this.containers.length === 0) return
 
-      const oldContainer = this.containers.find((container) => {
-        return container.uuid == containerID
-      })
+      const oldContainer = this.containers.find(container => container.uuid === containerID )
       const task = oldContainer!.tasks[index]
 
       oldContainer!.tasks.splice(index, 1)
 
-      if (containerID == newContainerID && index === newIndex - 1) {
-        newIndex++
-      }
-
       const newContainer = this.containers.find((container) => container.uuid == newContainerID)
       newContainer!.tasks.splice(newIndex, 0, task)
     },
-    async updateUpstream(task: Task) {}
+    async updateTaskUpstream(taskId: string, newPrevId: string, newContainerId: string) {
+      const orderBody = {
+        taskId: taskId,
+        prevId: newPrevId
+      }
+      
+      fetch('http://home.local:9001/data/alter/task/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(orderBody)
+      })
+
+      const ownershipBody = {
+        taskId: taskId,
+        containerId: newContainerId
+      }
+      
+      fetch('http://home.local:9001/data/alter/task/ownership', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(ownershipBody)
+      })
+    }
   }
 })
 

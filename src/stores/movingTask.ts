@@ -27,6 +27,11 @@ const useMovingTaskStore = defineStore('movingTask', {
       })
     },
     stopMoving() {
+      const newContainer = useContainersStore().containers.find(container => container.uuid === this.containerID)
+      if(newContainer === undefined) return
+      const newPrev = this.index === 0 ? newContainer.uuid : newContainer.tasks[this.index - 1].uuid
+
+      useContainersStore().updateTaskUpstream(this.movingTask.uuid, newPrev, this.containerID)
       this.$reset()
     }
   }

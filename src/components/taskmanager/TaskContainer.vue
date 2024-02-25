@@ -1,6 +1,6 @@
 <template>
   <div class="task-container">
-    <div class="inner-task-container">
+    <div class="inner-task-container" @mouseenter="taskMoveOverHandler(tasks!.length, uuid!)">
       <div
         class="task-colision-box"
         v-for="(task, index) in tasks"
@@ -63,14 +63,12 @@ export default {
   overflow-y: scroll;
   flex-grow: 1;
 
-  padding: 5px;
-  padding-bottom: none;
-
   scrollbar-width: none;
 }
 
 .task-colision-box {
-  padding-bottom: 5px;
+  padding: 5px;
+  padding-bottom: 0px;
 }
 
 .create-new-button {
