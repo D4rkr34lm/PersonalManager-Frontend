@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { randomUUID } from 'crypto'
+import { v4 as uuidv4 } from "uuid"
 
 import router from '@/router'
 
@@ -84,7 +84,7 @@ const useContainersStore = defineStore('counters', {
       })
     },
     createTask(containerId: string, title: string, type: string, body: any) {
-      const id = randomUUID()
+      const id = uuidv4()
 
       const container = this.containers.find(container => container.uuid === containerId)
       if(container === undefined) return
@@ -114,7 +114,7 @@ const useContainersStore = defineStore('counters', {
       container.tasks.push(task)
     },
     createContainer(){
-      const id = randomUUID()
+      const id = uuidv4()
 
       const reqBody = {
         containerId: id
